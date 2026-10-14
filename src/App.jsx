@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import "./index.css"
 import "./App.css"
+import logo from "./logo.png";
 
 function useBookCollection(storageKey) {
   const [books, setBooks] = useState(() => {
@@ -23,11 +25,32 @@ function useBookCollection(storageKey) {
   return { books, add, remove }
 }
 
+function ListModal({ title, books, onRemove, onClose }) {
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <h2>{title}</h2>
+        <button onClick={onClose}>Close</button>
+        <ul>
+          {books.map((book) => (
+            <li key={book.key}>
+              {book.title} - {(book.author_name ?? []).join(", ")}
+              <button onClick={() => onRemove(book.key)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 function BookList() {
   const [books, setBooks] = useState([]);
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
+  const [showReadingList, setShowReadingList] = useState(false);
+  const [showWishlist, setShowWishlist] = useState(false);
   const { books: readingList, add: addBook, remove: removeBook } = useBookCollection("dogear-reading-list");
   const { books: wishlist, add: addToWishList, remove: removeFromWishlist } = useBookCollection("dogear-wishlist");
 
@@ -44,16 +67,20 @@ function BookList() {
 
   return (
     <div>
-      <h2> My Reading List</h2>
-      <ul>
-        {readingList.map((book) => (
-          <li key={book.key}>
-            {book.title} - {(book.author_name ?? []).join(", ")}
-            <button onClick={() => removeBook(book.key)}>Remove</button>
-          </li>
-        ))}
-      </ul>
-{/* modal for search engine feature*/}
+      <button onClick={() => setShowReadingList(true)}>
+        Reading List
+      </button>
+      <button onClick={() => setShowWishlist(true)}>
+        Wishlist
+      </button>
+      {showReadingList && (
+        <ListModal title="My Reading List" books={readingList} onRemove={removeBook} onClose={() => setShowReadingList(false)} />
+      )}
+      {showWishlist && (
+        <ListModal title="Wishlist" books={wishlist} onRemove={removeFromWishlist} onClose={() => setShowWishlist(false)} />
+      )}
+
+{/* search engine feature*/}
       <button onClick={() => setShowSearch(true)}>Search books</button>
       {showSearch && (
         <div className="modal-backdrop" onClick={() => setShowSearch(false)}>
@@ -70,6 +97,7 @@ function BookList() {
                 <li key={book.key}>
                   {book.title} - {(book.author_name ?? []).join(", ")}
                   <button onClick={() => addBook(book)}>Add</button>
+                  <button onClick={() => addToWishList(book)}>Wishlist</button>
                 </li>
               ))}
             </ul>
@@ -83,7 +111,9 @@ function BookList() {
 function App() {
     return (
       <div>
-        <h1>Dogear</h1>
+        <h1>
+          <img src={logo} className="logo" alt="dogear logo - a book page with a happy face" />
+        </h1>
         <BookList />
       </div>
     );
