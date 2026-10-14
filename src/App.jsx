@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./index.css"
 import "./App.css"
+import { circlePlus, heart, circleMinus, circleXmark, book, bookBookmark } from "./icons.js";
 import logo from "./logo.png";
 
 function useBookCollection(storageKey) {
@@ -30,12 +31,16 @@ function ListModal({ title, books, onRemove, onClose }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <h2>{title}</h2>
-        <button onClick={onClose}>Close</button>
+        <button className="icon-button" onClick={onClose}>
+          <img src={circleXmark} className="icon" alt="close button" />
+        </button>
         <ul>
           {books.map((book) => (
             <li key={book.key}>
               {book.title} - {(book.author_name ?? []).join(", ")}
-              <button onClick={() => onRemove(book.key)}>Remove</button>
+              <button className="icon-button" onClick={() => onRemove(book.key)}>
+                <img src={circleMinus} className="icon" alt="remove from list" />
+              </button>
             </li>
           ))}
         </ul>
@@ -48,11 +53,13 @@ function BookList() {
   const [books, setBooks] = useState([]);
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
-  const [showSearch, setShowSearch] = useState(false);
-  const [showReadingList, setShowReadingList] = useState(false);
-  const [showWishlist, setShowWishlist] = useState(false);
+  const [openModal, setOpenModal] = useState(null);
   const { books: readingList, add: addBook, remove: removeBook } = useBookCollection("dogear-reading-list");
   const { books: wishlist, add: addToWishList, remove: removeFromWishlist } = useBookCollection("dogear-wishlist");
+
+  function toggleModal(name) {
+    setOpenModal(openModal === name ? null : name);
+  }
 
   useEffect(() => {
     async function fetchBooks() {
@@ -68,34 +75,32 @@ function BookList() {
   return (
     <div>
       <div className="button-bar">
-        <button onClick={() => setShowReadingList(true)}>Reading List</button>
-        <button onClick={() => setShowWishlist(true)}>Wishlist</button>
-        <button onClick={() => setShowSearch(true)}>Search Books</button>
+        <button onClick={() => toggleModal('reading')}>Reading List</button>
+        <button onClick={() => toggleModal('wishlist')}>Wishlist</button>
+        <button onClick={() => toggleModal('search')}>Search Books</button>
       </div>
-      {showReadingList && (
-        <ListModal title="My Reading List" books={readingList} onRemove={removeBook} onClose={() => setShowReadingList(false)} />
+      {openModal === 'reading' && (
+        <ListModal title="My Reading List" books={readingList} onRemove={removeBook} onClose={() => setOpenModal(null)} />
       )}
-      {showWishlist && (
-        <ListModal title="Wishlist" books={wishlist} onRemove={removeFromWishlist} onClose={() => setShowWishlist(false)} />
+      {openModal === 'wishlist' && (
+        <ListModal title="Wishlist" books={wishlist} onRemove={removeFromWishlist} onClose={() => setOpenModal(null)} />
       )}
-
-{/* search engine feature*/}
-      {showSearch && (
-        <div className="modal-backdrop" onClick={() => setShowSearch(false)}>
+      {openModal === 'search' && (
+        <div className="modal-backdrop" onClick={() => setOpenModal(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Search books..."
             />
-            <button onClick={() => setQuery(input)}> Search </button>
-            <button onClick={() => setShowSearch(false)}>Close</button>
+            <button onClick={() => setQuery(input)}>Search</button>
+            <button onClick={() => setOpenModal(null)}>Close</button>
             <ul>
               {books.map((book) => (
                 <li key={book.key}>
                   {book.title} - {(book.author_name ?? []).join(", ")}
-                  <button onClick={() => addBook(book)}>Add</button>
-                  <button onClick={() => addToWishList(book)}>Wishlist</button>
+                  <button onClick={() => addBook(book)}>⊕ Reading List</button>
+                  <button onClick={() => addToWishList(book)}>⊕ Wishlist</button>
                 </li>
               ))}
             </ul>
