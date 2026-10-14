@@ -67,12 +67,11 @@ function BookList() {
 
   return (
     <div>
-      <button onClick={() => setShowReadingList(true)}>
-        Reading List
-      </button>
-      <button onClick={() => setShowWishlist(true)}>
-        Wishlist
-      </button>
+      <div className="button-bar">
+        <button onClick={() => setShowReadingList(true)}>Reading List</button>
+        <button onClick={() => setShowWishlist(true)}>Wishlist</button>
+        <button onClick={() => setShowSearch(true)}>Search Books</button>
+      </div>
       {showReadingList && (
         <ListModal title="My Reading List" books={readingList} onRemove={removeBook} onClose={() => setShowReadingList(false)} />
       )}
@@ -81,7 +80,6 @@ function BookList() {
       )}
 
 {/* search engine feature*/}
-      <button onClick={() => setShowSearch(true)}>Search books</button>
       {showSearch && (
         <div className="modal-backdrop" onClick={() => setShowSearch(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>

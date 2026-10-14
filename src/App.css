@@ -25,6 +25,10 @@ button {
 button:hover {
     filter: brightness(1.1);
 }
+.button-bar{
+    position: relative;
+    z-index: 10;
+}
 .logo{
     width: 180px;
     height: auto;
@@ -42,7 +46,7 @@ h1 {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding-top: 160px;
+    padding-top: 300px;
     pointer-events: none;
 }
 .modal {
