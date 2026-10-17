@@ -11,6 +11,9 @@ body{
     font-family: Georgia, serif;
     margin: 0;
 }
+ul {
+    list-style-type: none;
+}
 button {
     background: var(--fox);
     color: var(--paper);
@@ -61,12 +64,49 @@ h1 {
     pointer-events: auto;
 }
 .icon {
-    width: 2em;
-    height: 2em;
+    width: 1.5em;
+    height: 1.5em;
 }
-.icon-button {
+.bookTab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+}
+.bookTab h2{
+    font-size: 1.45rem;
+    color:var(--ink);
+
+}
+.icon-button, .wish-btn, .reading-btn {
     background: var(--paper);
     border: 3px solid var(--fox);
     padding: .25em .25em 0em .25em;
     margin: 0;
+}
+.wish-btn, .reading-btn{
+    margin: .5rem;
+    padding: .5em .5em .25em .5em;
+}
+.source-toggle {
+    display: flex;
+    gap: 3rem;
+    margin: 1rem 3rem;
+}
+.source-toggle button {
+    flex: 1;
+    margin: 0;
+    background: var(--blush);
+    color: var(--muted_ink);
+    border: 2px solid var(--blush);
+}
+.source-toggle button:hover{
+    background: var(--fox);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+}
+.source-toggle button.active{
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--fox);
 }
