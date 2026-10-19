@@ -88,6 +88,21 @@ h1 {
     margin: .5rem;
     padding: .5em .5em .25em .5em;
 }
+.book-remove{
+    display: flex;
+    background: var(--muted_ink);
+    color: var(--fox);
+    padding: .25rem .75rem;
+    justify-content: center;
+    align-items: center;
+}
+.book-remove:hover{
+    background: var(--paper);
+    color: var(--ink);
+}
+.book-remove img{
+    padding: .2rem .5rem;
+}
 .source-toggle {
     display: flex;
     gap: 3rem;
@@ -109,4 +124,13 @@ h1 {
     background: var(--ink);
     color: var(--paper);
     border-color: var(--fox);
+}
+.source-label{
+    background: white;
+    font-size: .75rem;
+    padding: .35em .20em;
+    margin: .25em;
+    border: 2px solid var(--fox);
+    border-radius: 20%  0%  20% 20%;
+    filter: drop-shadow(.25em .3em var(--muted_ink));
 }

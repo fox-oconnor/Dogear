@@ -4,13 +4,13 @@ import { searchOpenLibrary, searchGutenberg } from './search.jsx'
 
 
 
-function SearchModal({ onClose, onAddBook, onAddToWishList }) {
+function SearchModal({ onClose, onAddBook, onAddToWishlist }) {
   const [books, setBooks] = useState([]);
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
-  const [source, setSource] = useState('gutenberg');
+  const [source, setSource] = useState('openlibrary');
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState('false');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchBooks() {
@@ -18,7 +18,7 @@ function SearchModal({ onClose, onAddBook, onAddToWishList }) {
         setBooks([]);
         return;
       }
-      setIsLoading(trut);
+      setIsLoading(true);
       setError(null);
       try {
         const results = source === 'gutenberg'
@@ -82,12 +82,12 @@ function SearchModal({ onClose, onAddBook, onAddToWishList }) {
                 </h2>
                 <button
                   className='reading-btn'
-                  onClick={() => addBook(book)}>
+                  onClick={() => onAddBook(book)}>
                   <img src={bookBookmark} className='icon' title='Add to reading list' alt='a book icon' />
                 </button>
                 <button
                   className='wish-btn'
-                  onClick={() => addToWishList(book)}>
+                  onClick={() => onAddToWishlist(book)}>
                   <img src={heart} className='icon' title='a heart icon' />
                 </button>
               </div>

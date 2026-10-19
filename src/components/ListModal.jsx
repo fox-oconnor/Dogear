@@ -1,6 +1,6 @@
 import { circlePlus, heart, circleMinus, circleXmark, book, bookBookmark } from "../icons.js";
 
-function ListModal({ title, books, onRemove, onClose }) {
+function ListModal({ title, books, onRemove, onSelect, onClose }) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -11,10 +11,8 @@ function ListModal({ title, books, onRemove, onClose }) {
         <ul>
           {books.map((book) => (
             <li key={book.key}>
-              {book.source && <span className="source-label">{book.source}</span>} -
-              {book.title} - {(book.author_name ?? []).join(", ")}
-              <button className="icon-button" onClick={() => onRemove(book.key)}>
-                <img src={circleMinus} className="icon" alt="remove from list" />
+              <button className="book-title" onClick={() => onSelect(book)}>
+                {book.title} - {(book.author_name ?? []).join(", ")}
               </button>
             </li>
           ))}

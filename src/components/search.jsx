@@ -13,6 +13,9 @@ async function searchOpenLibrary(query) {
     author_name: doc.author_name ?? ['Unknown'],
     key: doc.key,
     source: 'OL',
+    cover_url: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : null,
+    first_publish_year: doc.first_publish_year ?? null,
+    subjects: (doc.subject ?? []).slice(0, 5),
   }));
 }
 
