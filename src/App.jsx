@@ -1,17 +1,25 @@
 import { useState } from 'react';
-import './index.css'
-import './App.css'
+import './index.css';
+import './App.css';
 import logo from './logo.png';
-import { SearchModal } from './components/SearchModal'
-import { ListModal } from './components/ListModal.jsx'
-import { useBookCollection } from './components/BookCollection.jsx'
-import { BookDetail } from './components/BookDetail.jsx'
+import { SearchModal } from './components/SearchModal';
+import { ListModal } from './components/ListModal.jsx';
+import { useBookCollection } from './components/BookCollection.jsx';
+import { BookDetail } from './components/BookDetail.jsx';
+import { getActiveProfile, listProfiles, migrateLegacyData } from './profiles.js';
+import { ProfileSwitcher } from './components/ProfileSwitcher.jsx';
+import { WelcomeModal } from './components/WelcomeModal.jsx';
+import { ProfileModal } from './components/ProfileModal.jsx';
 
-function BookList() {
+function BookList({ onProfileChange }) {
   const [openModal, setOpenModal] = useState(null);
   const [selectedBook, setSelectedBook] = useState(null);
-  const { books: readingList, add: addBook, remove: removeBook } = useBookCollection('dogear-reading-list');
-  const { books: wishlist, add: addToWishList, remove: removeFromWishlist } = useBookCollection('dogear-wishlist');
+  const activeProfile = getActiveProfile();
+  const readingKey = activeProfile ? `dogear:${activeProfile.id}:reading-list` : 'dogear-reading-list';
+  const wishlistKey = activeProfile ? `dogear:${activeProfile.id}: wishlist` : 'dogear-wishlist';
+  const { books: readingList, add: addBook, remove: removeBook } = useBookCollection(readingKey);
+  const { books: wishlist, add: addToWishList, remove: removeFromWishlist } = useBookCollection(wishlistKey);
+
 
   function toggleModal(name) {
     setOpenModal(openModal === name ? null : name);
@@ -29,6 +37,7 @@ function BookList() {
         <button onClick={() => toggleModal('reading')}>Reading List</button>
         <button onClick={() => toggleModal('wishlist')}>Wishlist</button>
         <button onClick={() => toggleModal('search')}>Search Books</button>
+        <button onClick={() => toggleModal('profiles')}>{activeProfile ? activeProfile.name : 'Profiles'}</button>
       </div>
       {openModal === 'reading' && (
           <ListModal title="My Reading List" books={readingList} onRemove={removeBook} onSelect={setSelectedBook}  onClose={() => setOpenModal(null)} />
@@ -42,8 +51,13 @@ function BookList() {
           onAddBook={addBook}
           onAddToWishlist={addToWishList}
         />
-      )}
-      {selectedBook && (
+        )}
+        {openModal === 'profiles' && (
+          <ProfileModal
+            onClose={() => setOpenModal(null)}
+            onProfileChange={onProfileChange} />
+        )}
+        {selectedBook && (
           <BookDetail book={selectedBook} onClose={() => setSelectedBook(null)} onRemoveBook={removeSelectedBook} />
         )}
     </div>
@@ -51,15 +65,39 @@ function BookList() {
 }
 
 function App() {
-    return (
-      <div>
-        <h1>
-          <img src={logo} className="logo" alt="dogear logo - a book page with a happy face" />
-        </h1>
-        <BookList />
-      </div>
-    );
+  const [activeId, setActiveId] = useState(() => {
+    const active = getActiveProfile();
+    return active ? active.id : null;
+  });
+  const [showWelcome, setShowWelcome] = useState(() => listProfiles().length === 0);
+
+  function handleProfileChange() {
+    const active = getActiveProfile();
+    setActiveId(active ? active.id : null);
   }
 
+  function handleWelcomeComplete(name) {
+    migrateLegacyData(name);
+    const active = getActiveProfile();
+    setActiveId(active ? active.id : null);
+    setShowWelcome(false);
+  }
+
+  if (showWelcome) {
+    return <WelcomeModal onComplete={handleWelcomeComplete} />;
+  }
+
+  return (
+    <div>
+      <h1>
+        <img src={logo} className='logo' alt='dogear logo - a book page with a happy face.' />
+      </h1>
+      <BookList
+        key={activeId}
+        onProfileChange={handleProfileChange}
+      />
+    </div>
+  );
+}
 
 export default App;
