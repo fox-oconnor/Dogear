@@ -5,7 +5,7 @@ function ListModal({ title, books, onRemove, onSelect, onClose }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <h2>{title}</h2>
-        <button className="icon-button" onClick={onClose}>
+        <button className="icon-button modal-close" onClick={onClose}>
           <img src={circleXmark} className="icon" alt="close button" />
         </button>
         <ul>

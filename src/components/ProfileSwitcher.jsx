@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { listProfiles, getActiveProfile, createProfile, switchProfile } from '../profiles.js';
 
 function ProfileSwitcher({ onProfileChange }) {
-  const [profile, setProfiles] = useState(listProfiles());
+  const [profiles, setProfiles] = useState(listProfiles());
   const [newName, setNewName] = useState('');
   const active = getActiveProfile();
 
@@ -24,7 +24,7 @@ function ProfileSwitcher({ onProfileChange }) {
 
   return (
     <div className='profile-switcher'>
-      {profile.map((p) => (
+      {profiles.map((p) => (
         <button
           key={p.id}
           className={active && active.id === p.id ? 'active' : ''}

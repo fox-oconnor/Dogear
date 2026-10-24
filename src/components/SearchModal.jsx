@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { bookBookmark, heart } from '../icons.js'
+import { bookBookmark, heart, circleXmark } from '../icons.js'
 import { searchOpenLibrary, searchGutenberg } from './search.jsx'
 
 
@@ -42,6 +42,9 @@ function SearchModal({ onClose, onAddBook, onAddToWishlist }) {
   return (
     <div className='modal-backdrop' onClick={onClose}>
       <div className='modal' onClick={(e) => e.stopPropagation()}>
+        <button className='icon-button modal-close' onClick={onClose}>
+          <img src={circleXmark} className='icon' alt='close button' />
+        </button>
         <form onSubmit={handleSearchSubmit}>
           <label htmlFor='book-search'>
             Search Books

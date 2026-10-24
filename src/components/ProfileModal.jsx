@@ -5,7 +5,7 @@ function ProfileModal({ onClose, onProfileChange }) {
   return (
     <div className='modal-backdrop' onClick={onClose}>
       <div className='modal' onClick={(e) => e.stopPropagation()}>
-        <button className='icon-button' onClick={onClose}>
+        <button className='icon-button modal-close' onClick={onClose}>
           <img src={circleXmark} className='icon' alt='close button' />
         </button>
         <h2>Profiles</h2>

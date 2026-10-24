@@ -64,11 +64,12 @@ function migrateLegacyData(name) {
   const legacyWishlist = localStorage.getItem('dogear-wishlist');
   const profile = createProfile(name);
   if (legacyReading) {
-    localStorage.setItem(`dogear: ${profile.id}: reading-list`, legacyReading);
-    if (legacyWishlist) {
-      localStorage.setItem(`dogear:${profile.id}: wishlist`, legacyWishlist);
+    localStorage.setItem(`dogear:${profile.id}:reading-list`, legacyReading);
   }
+  if (legacyWishlist) {
+    localStorage.setItem(`dogear:${profile.id}:wishlist`, legacyWishlist);
   }
 }
+
 
 export { listProfiles, getActiveProfile, createProfile, switchProfile, deleteProfile, migrateLegacyData };

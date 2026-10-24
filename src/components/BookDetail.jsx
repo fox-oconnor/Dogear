@@ -11,13 +11,14 @@ function BookDetail({ book, onClose, onRemoveBook }) {
   return (
     <div className='modal-backdrop' onClick={onClose}>
       <div className='modal' onClick={(e) => e.stopPropagation()}>
-        <button className='icon-button' onClick={onClose}>
+        <button className='icon-button modal-close' onClick={onClose}>
           <img src={circleXmark} className='icon' alt='close button' />
         </button>
         {book.cover_url && (
           <img src={book.cover_url} className='book-cover' alt={`Cover of ${book.title}`} />
         )}
-        <h2> {book.title} </h2>
+        <hr />
+          <h2> {book.title} </h2>
         <p className='book-authors'>{(book.author_name ?? []).join(',')}</p>
         <button className="icon-button book-remove" onClick={() => onRemoveBook(book.key)}>
           <img src={circleMinus} className="icon" alt="remove from list" /> Remove from List
