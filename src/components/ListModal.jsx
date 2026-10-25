@@ -1,6 +1,6 @@
-import { circlePlus, heart, circleMinus, circleXmark, book, bookBookmark } from "../icons.js";
+import { circleXmark } from "../icons.js";
 
-function ListModal({ title, books, onRemove, onSelect, onClose }) {
+function ListModal({ title, books, onSelect, onClose }) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>

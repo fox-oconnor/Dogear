@@ -107,6 +107,7 @@ h1.logo-hidden {
 .book-cover{
     max-width: 200px;
     height: auto;
+    margin: .5rem auto;
 }
 .icon-button, .wish-btn, .reading-btn {
     background: var(--paper);
@@ -126,12 +127,31 @@ h1.logo-hidden {
     justify-content: center;
     align-items: center;
 }
-.book-remove:hover{
+.book-remove:hover, .book-footer a:hover{
     background: var(--paper);
     color: var(--ink);
 }
 .book-remove img{
     padding: .2rem .5rem;
+}
+.book-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem;
+}
+.book-footer a, .book-footer button {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    background: var(--muted_ink);
+    color: var(--fox);
+    border: 3px solid var(--fox);
+    border-radius: 999px;
+    text-decoration: none;
+    padding: .75em;
+    cursor: pointer;
+    margin: .5rem;
 }
 .source-toggle {
     display: flex;
@@ -163,4 +183,63 @@ h1.logo-hidden {
     border: 2px solid var(--fox);
     border-radius: 20%  0%  20% 20%;
     filter: drop-shadow(.25em .3em var(--muted_ink));
+}
+.profile-switcher {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+}
+.profile-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    padding: 1rem;
+}
+.profile-row .profile-rename{
+    margin-left: auto;
+}
+.profile-row .profile-info {
+    width: 100%;
+}
+.profile-row .profile-name{
+    font-size: 1.25rem;
+    background: transparent;
+    color: var(--ink);
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.profile-row .profile-name:hover {
+    color: var(--fox);
+}
+.profile-row .profile-name.active {
+    color: var(--fox);
+}
+.profile-info {
+    margin-top: 0.5rem;
+}
+.profile-info p {
+    margin: 0.5rem 0;
+    padding: 0.2rem 0;
+    color: var(--muted_ink);
+}
+.profile-row .profile-rename,
+.profile-row .profile-delete {
+    background: var(--paper);
+    color: var(--ink);
+    border: 2px solid var(--fox);
+    padding: 0.35rem 0.9rem;
+    font-size: 0.9rem;
+}
+.profile-row .profile-delete {
+    background: var(--muted_ink);
+    color: var(--paper);
+}
+.title{
+    font-size: 1.1rem;
+    font-weight: bold;
 }

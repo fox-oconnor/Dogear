@@ -25,11 +25,13 @@ function getActiveProfile() {
   return registry.profiles.find((p) => p.id === registry.activeId) || null;
 }
 
-function createProfile(name) {
+function createProfile(name, bio = '', location = '') {
   const registry = loadRegistry();
   const profile = {
     id: crypto.randomUUID(),
     name: name.trim(),
+    bio: bio.trim(),
+    location: location.trim(),
     createdAt: new Date().toISOString(),
     locked: false,
   };
@@ -54,15 +56,47 @@ function deleteProfile(id) {
     registry.activeId = registry.profiles.length > 0 ? registry.profiles[0].id : null;
   }
   saveRegistry(registry);
+  localStorage.removeItem(`dogear:${id}:reading-list`);
+  localStorage.removeItem(`dogear:${id}:wishlist`);
   return true;
 }
 
-function migrateLegacyData(name) {
+function renameProfile(id, newName) {
+  const trimmed = newName.trim();
+  if (!trimmed) return false;
+  const registry = loadRegistry();
+  const profile = registry.profiles.find((p) => p.id === id);
+  if (!profile) return false;
+  profile.name = trimmed;
+  saveRegistry(registry);
+  return true;
+}
+
+function updateProfile(id, updates) {
+  const registry = loadRegistry();
+  const profile = registry.profiles.find((p) => p.id === id);
+  if (!profile) return false;
+  if (updates.name !== undefined) {
+    const trimmed = updates.name.trim();
+    if (!trimmed) return false;
+    profile.name = trimmed;
+  }
+  if (updates.bio !== undefined) {
+    profile.bio = updates.bio.trim();
+  }
+  if (updates.location !== undefined) {
+    profile.location = updates.location.trim();
+  }
+  saveRegistry(registry);
+  return true;
+}
+
+function migrateLegacyData(name, bio = '', location = '') {
   const registry = loadRegistry();
   if (registry.profiles.length > 0) return;
   const legacyReading = localStorage.getItem('dogear-reading-list');
   const legacyWishlist = localStorage.getItem('dogear-wishlist');
-  const profile = createProfile(name);
+  const profile = createProfile(name, bio, location);
   if (legacyReading) {
     localStorage.setItem(`dogear:${profile.id}:reading-list`, legacyReading);
   }
@@ -72,4 +106,4 @@ function migrateLegacyData(name) {
 }
 
 
-export { listProfiles, getActiveProfile, createProfile, switchProfile, deleteProfile, migrateLegacyData };
+export { listProfiles, getActiveProfile, createProfile, switchProfile, deleteProfile, renameProfile, updateProfile, migrateLegacyData };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './index.css';
 import './App.css';
 import logo from './logo.png';
@@ -10,21 +10,16 @@ import { getActiveProfile, listProfiles, migrateLegacyData } from './profiles.js
 import { WelcomeModal } from './components/WelcomeModal.jsx';
 import { ProfileModal } from './components/ProfileModal.jsx';
 
-function BookList({ onProfileChange, onModalChange }) {
-  const [openModal, setOpenModal] = useState(null);
-  const [selectedBook, setSelectedBook] = useState(null);
+function BookList({ onProfileChange, openModal, setOpenModal, selectedBook, setSelectedBook }) {
   const activeProfile = getActiveProfile();
   const readingKey = activeProfile ? `dogear:${activeProfile.id}:reading-list` : 'dogear-reading-list';
   const wishlistKey = activeProfile ? `dogear:${activeProfile.id}:wishlist` : 'dogear-wishlist';
   const { books: readingList, add: addBook, remove: removeBook } = useBookCollection(readingKey);
   const { books: wishlist, add: addToWishList, remove: removeFromWishlist } = useBookCollection(wishlistKey);
 
-  useEffect(() => {
-    onModalChange(openModal !== null || selectedBook !== null);
-  }, [openModal, selectedBook, onModalChange]);
-
   function toggleModal(name) {
     setOpenModal(openModal === name ? null : name);
+    setSelectedBook(null);
   }
 
   function removeSelectedBook(key) {
@@ -81,16 +76,23 @@ function App() {
     const active = getActiveProfile();
     return active ? active.id : null;
   });
+  const [profileNonce, setProfileNonce] = useState(0);
   const [showWelcome, setShowWelcome] = useState(() => listProfiles().length === 0);
-  const [anyModalOpen, setAnyModalOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
 
   function handleProfileChange() {
     const active = getActiveProfile();
     setActiveId(active ? active.id : null);
+    setProfileNonce((n) => n + 1);
+    setSelectedBook(null);
+    if (listProfiles().length === 0) {
+      setShowWelcome(true);
+    }
   }
 
-  function handleWelcomeComplete(name) {
-    migrateLegacyData(name);
+  function handleWelcomeComplete(name, bio, location) {
+    migrateLegacyData(name, bio, location);
     const active = getActiveProfile();
     setActiveId(active ? active.id : null);
     setShowWelcome(false);
@@ -99,6 +101,7 @@ function App() {
   if (showWelcome) {
     return <WelcomeModal onComplete={handleWelcomeComplete} />;
   }
+  const anyModalOpen = openModal !== null || selectedBook !== null;
 
   return (
     <div>
@@ -106,9 +109,12 @@ function App() {
         <img src={logo} className='logo' alt='dogear logo - a book page with a happy face.' />
       </h1>
       <BookList
-        key={activeId}
+        key={`${activeId}-${profileNonce}`}
         onProfileChange={handleProfileChange}
-        onModalChange={setAnyModalOpen}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        selectedBook={selectedBook}
+        setSelectedBook={setSelectedBook}
       />
     </div>
   );

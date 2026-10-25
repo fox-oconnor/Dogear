@@ -2,11 +2,14 @@ import { useState } from 'react';
 
 function WelcomeModal({ onComplete }) {
   const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
+  const [location, setLocation] = useState('');
+
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!name.trim()) return;
-    onComplete(name.trim());
+    onComplete(name.trim(), bio.trim(), location.trim());
   }
 
   return (
@@ -24,6 +27,20 @@ function WelcomeModal({ onComplete }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder='Milo'
+          />
+          <label htmlFor='bio'>Bio:</label>
+          <input
+            id='bio'
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder='The best fox-friend you will ever need. :)'
+          />
+          <label htmlFor='location'>Location:</label>
+          <input
+            id='location'
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder='In a cozy fox den somewhere in Valdemar.'
           />
           <button type='submit'>
             Start Reading!

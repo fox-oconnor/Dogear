@@ -25,7 +25,7 @@ function SearchModal({ onClose, onAddBook, onAddToWishlist }) {
           ? await searchGutenberg(query)
           : await searchOpenLibrary(query);
         setBooks(results);
-      } catch (e) {
+      } catch {
         setError('Search failed - the book service may be down. Please try again in a bit.')
       } finally {
         setIsLoading(false);
@@ -80,6 +80,9 @@ function SearchModal({ onClose, onAddBook, onAddToWishlist }) {
           {books.map((book) => (
             <li key={book.key}>
               <div className='bookTab'>
+                {book.cover_url && (
+                  <img src={book.cover_url} className='book-cover' alt={`Cover of ${book.title}`} />
+                )}
                 <h2>
                   {book.title} - {(book.author_name ?? []).join(', ')}
                 </h2>
