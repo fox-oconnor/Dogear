@@ -70,7 +70,7 @@ function SearchModal({ onClose, onAddBook, onAddToWishlist }) {
             className={source === 'gutenberg' ? 'active' : ''}
             onClick={() => setSource('gutenberg')}
           >
-            Gutenberg Project
+            Project Gutenberg
           </button>
         </div>
         {error && <p className='error'>{error}</p>}

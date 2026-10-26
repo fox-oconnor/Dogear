@@ -37,7 +37,7 @@ function BookDetail({ book, onClose, onRemoveBook }) {
   const sourceLink = book.source === 'GP'
     ? `https://www.gutenberg.org/ebooks/${book.gutenberg_id}`
     : `https://openlibrary.org${book.key}`;
-  const sourceName = book.source === 'GP' ? 'Gutenberg Project' : 'Open Library';
+  const sourceName = book.source === 'GP' ? 'Project Gutenberg' : 'Open Library';
   const description = book.description ?? workDescription;
   const subjects = book.subjects && book.subjects.length > 0 ? book.subjects : workSubjects;
 

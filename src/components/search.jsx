@@ -7,7 +7,7 @@ function flipName(name) {
 
 async function searchOpenLibrary(query) {
   const response = await fetch(
-    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`
+    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=key,title,author_name,cover_i,first_publish_year,subject`
   );
   const json = await response.json();
   return (json.docs ?? []).map(doc => ({
@@ -23,7 +23,7 @@ async function searchOpenLibrary(query) {
 
 async function searchGutenberg(query) {
   const res = await fetch(
-    `https://gutendex.com/books/?search=${encodeURIComponent(query)}&fields=key,title,author_name,cover_i,first_publish_year,subject`
+    `https://gutendex.com/books/?search=${encodeURIComponent(query)}`
   );
   const json = await res.json();
   return (json.results ?? []).map(g => ({
