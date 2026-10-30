@@ -243,3 +243,67 @@ h1.logo-hidden {
     font-size: 1.1rem;
     font-weight: bold;
 }
+.submit-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    padding: 1rem;
+}
+.submit-profile input,
+.profile-row form input {
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+    background: #fff;
+    border: 2px solid var(--muted_ink);
+    border-radius: 8px;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+.submit-profile input {
+    width: 100%;
+}
+.submit-profile button {
+    align-self: flex-start;
+}
+.profile-row form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
+}
+.profile-row form input {
+    flex: 1 1 10rem;
+}
+.submit-profile input:focus,
+.profile-row form input:focus {
+    outline: none;
+    border-color: var(--fox);
+}
+.directions {
+    text-align: left;
+}
+.directions ul li {
+    margin-bottom: 0.5rem;
+}
+.directions h3{
+    text-align: center;
+    text-decoration: underline;
+    font-size: 1.5rem;
+}
+.welcome-input {
+    display: block;
+    text-align: center;
+    height: 1.5rem;
+    width: 80%;
+    margin: 1rem auto;
+}
+.greeting{
+    background: var(--paper);
+    padding: 1rem;
+    border: 3px solid var(--ink);
+    border-radius: 55px 55px 0px 55px;
+}

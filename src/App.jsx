@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './index.css';
 import './App.css';
-import logo from './logo.png';
+import logo from './assets/logo.png';
 import { SearchModal } from './components/SearchModal';
 import { ListModal } from './components/ListModal.jsx';
 import { useBookCollection } from './components/BookCollection.jsx';
